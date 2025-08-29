@@ -1,0 +1,39 @@
+#####vehicle side stuff
+/race_float/reporter_c2_serial_comm:
+  ros__parameters:
+    port: /dev/ttyUSB1
+    baudrate: 115200
+
+/race_float/reporter_c2_udp_comm:
+  ros__parameters:
+    type: client
+    server_ip: 192.168.2.200
+    server_port: 5000
+    client_ip: 192.168.2.62
+    client_port: 6000
+    dccl_tx_interval: 1.0
+
+
+/race_float/mvp_c2_reporter:
+  ros__parameters:
+    dccl_tx_interval: 1.0
+    launch_packages: ['race_float_bringup', 'race_float_bringup', 'race_float_bringup', 'race_float_bringup',  'race_float_bringup']
+    launch_files: ['bringup_utilities', 'bringup_sensors', bringup_localization, 'bringup_mvp', 'bringup_thrusters']
+    gpio_devices: ['payload_24v', 'regular_payload', 'jetson']  # this needs to match the gpio manager yaml
+
+## topside stuff
+/race_float/mvp_c2_commander:
+  ros__parameters:
+    dccl_tx_interval: 1.0
+    launch_packages: ['race_float_bringup', 'race_float_bringup', 'race_float_bringup', 'race_float_bringup',  'race_float_bringup']
+    launch_files: ['bringup_utilities', 'bringup_sensors', bringup_localization, 'bringup_mvp', 'bringup_thrusters']
+    gpio_devices: ['payload_24v', 'regular_payload', 'jetson']  # this needs to match the gpio manager yaml
+
+
+/race_float/commander_c2_udp_comm:
+  ros__parameters:
+    type: server
+    server_ip: 192.168.2.200
+    server_port: 5000
+    client_ip: 192.168.2.62
+    client_port: 6000

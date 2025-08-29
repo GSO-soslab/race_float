@@ -1,0 +1,5 @@
+/float_rise/gpio_manager_node:
+  ros__parameters:
+    gpio_devices: [x, y, z]
+    #Wring PI GPIO number
+    wiringpi_gpio: [13, 12, 11]
