@@ -1,4 +1,4 @@
-/float_rise/bluerobotics_pressure_node:
+/race_float/bluerobotics_pressure_node:
     ros__parameters:
         ros:
             frame_id: 'float_rise/pressure'

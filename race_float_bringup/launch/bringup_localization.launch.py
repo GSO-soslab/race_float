@@ -19,30 +19,6 @@ def generate_launch_description():
         }.items()  
     )
 
-    # Vehicle localization base_link <> odom
-    localization = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('race_float_bringup'), 
-            'launch/include/localization.launch.py')]),
-        launch_arguments={
-            'robot_name': robot_name,
-            'localization_delay': '2.0'
-        }.items()  
-    )
-
-    # world <> odom tf
-    initialization = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('race_float_bringup'), 
-            'launch/include/initialization.launch.py')]),
-        launch_arguments={
-            'robot_name': robot_name,
-            'localization_delay': '10.0'
-        }.items()  
-    )
-
     return LaunchDescription([
         description,
-        localization,
-        initialization
     ])

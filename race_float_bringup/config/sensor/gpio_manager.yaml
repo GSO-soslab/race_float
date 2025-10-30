@@ -1,4 +1,4 @@
-/float_rise/gpio_manager_node:
+/race_float/gpio_manager_node:
   ros__parameters:
     gpio_devices: [x, y, z]
     #Wring PI GPIO number

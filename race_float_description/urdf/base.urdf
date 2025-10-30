@@ -1,20 +1,11 @@
 <?xml version="1.0"?>
 
-<robot name="float_rise">
-   <link name="nose_tip_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <mesh filename="package://float_rise_description/mesh/float_assembly.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-        </visual>
-    </link>
+<robot name="race_float">
 
     <link name="base_link"/>
     <joint name="base_link" type="fixed">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="base_link"/>
-        <child link="nose_tip_link"/>
     </joint>
 
     <link name="cg_link"/>
@@ -27,17 +18,11 @@
 
     <link name="imu"/>
     <joint name="imu_joint" type="fixed">
-        <origin xyz="-0.2 -0.07 0.0" rpy="0.0 0.0 0.0"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="base_link"/>
         <child link="imu"/>
     </joint>
 
-    <!-- <link name="imu_sf"/>
-    <joint name="imu_sf_joint" type="fixed">
-        <origin xyz="0.0 0.0 0.17" rpy="0.0 0.0 0.0"/>
-        <parent link="base_link"/>
-        <child link="imu_sf"/>
-    </joint> -->
 
     <link name="pressure"/>
     <joint name="pressure_joint" type="fixed">
@@ -46,18 +31,25 @@
         <child link="pressure"/>
     </joint>
 
-    <link name="gps"/>
-    <joint name="gps_joint" type="fixed">
+    <link name="light"/>
+    <joint name="light_joint" type="fixed">
         <origin xyz="0.075 0.0 0.635" rpy="3.1415926 0.0 0.0"/>
         <parent link="base_link"/>
-        <child link="gps"/>
+        <child link="light"/>
     </joint>
 
-    <!-- <link name="odometry_sf"/>
-    <joint name="odometry_sf_joint" type="fixed">
-        <origin xyz="0.0 0.0 0.00" rpy="3.1415926 0.0 0.0"/>
+    <link name="tag1"/>
+    <joint name="tag1_joint" type="fixed">
+        <origin xyz="0.075 0.0 0.635" rpy="3.1415926 0.0 0.0"/>
         <parent link="base_link"/>
-        <child link="odometry_sf"/>
-    </joint> -->
+        <child link="tag1"/>
+    </joint>
+
+    <link name="tag2"/>
+    <joint name="tag2_joint" type="fixed">
+        <origin xyz="0.075 0.0 0.635" rpy="3.1415926 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="tag2"/>
+    </joint>
 
 </robot>
