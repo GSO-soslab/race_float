@@ -10,9 +10,9 @@ find_package(rclcpp REQUIRED)
 find_package(tf2_ros REQUIRED)
 
 install(DIRECTORY 
-  mesh
+  # mesh
   urdf
-  rviz 
+  # rviz 
   # config
   DESTINATION share/${PROJECT_NAME}
 )
