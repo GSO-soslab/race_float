@@ -12,21 +12,6 @@ def generate_launch_description():
     reporter_setting_file = os.path.join(get_package_share_directory(robot_bringup), 'config', 'mvp_c2.yaml') 
     
     return LaunchDescription([
-        # serial_comm
-        # Node(
-        #     package = 'mvp_c2',
-        #     namespace = robot_name,
-        #     executable='mvp_c2_serial_comm',
-        #     name = 'reporter_c2_serial_comm',
-        #     output='screen',
-        #     prefix=['stdbuf -o L'],
-        #     parameters=[reporter_setting_file],
-        #     remappings=[
-        #         ('dccl_msg_tx', 'mvp_c2/dccl_msg_tx'),
-        #         ('dccl_msg_rx', 'mvp_c2/dccl_msg_rx'),
-        #     ]
-        # ),
-        #udp
         Node(
             package = 'mvp_c2',
             namespace = robot_name,
@@ -52,9 +37,6 @@ def generate_launch_description():
             remappings=[
                 ('local/odometry', 'odometry/filtered'),
                 ('local/geopose', 'odometry/geopose'),
-                # ('joy', 'mvp_helm/bhv_teleop/joy'),
-                # ('mvp_helm/path', 'bhv_path_following/get_next_waypoints'),
-                # ('mvp_helm/set_waypoints', 'bhv_path_following/update_waypoints'),
                 ('/race_float/local/power_monitor', '/race_float/power_monitor_node/power_monitor'),
                 ('/race_float/local/computer_info', '/race_float/pi/computer_info')
             ]

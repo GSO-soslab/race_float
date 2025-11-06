@@ -6,7 +6,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
-    robot_name = 'race_float'
+    robot_name = 'wamv_rise'
 
     # Vehicle description
     description = IncludeLaunchDescription(
@@ -19,6 +19,18 @@ def generate_launch_description():
         }.items()  
     )
 
+    # Vehicle localization
+    localization = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            os.path.join(get_package_share_directory('race_float_bringup'), 
+            'launch/include/localization.launch.py')]),
+        launch_arguments={
+            'robot_name': robot_name,
+            'localization_delay': '3.0'
+        }.items()  
+    )
+
     return LaunchDescription([
         description,
+        localization,
     ])

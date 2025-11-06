@@ -12,6 +12,12 @@ def generate_launch_description():
     arg_robot_name = 'race_float'
     robot_bringup = arg_robot_name + '_bringup'
 
+    #Pressure
+    pressure = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(get_package_share_directory(robot_bringup), 'launch','include','bluerobotics_bar30.launch.py')]),
+        launch_arguments = {'arg_robot_name': arg_robot_name}.items()  
+    )
+
     # Unicore GPS
     vectornav_vn300 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(get_package_share_directory(robot_bringup), 'launch','include','vectornav.launch.py')]),
@@ -19,5 +25,6 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        vectornav_vn300
+        vectornav_vn300,
+        pressure
     ])

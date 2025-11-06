@@ -1,7 +1,7 @@
 /race_float/bluerobotics_pressure_node:
     ros__parameters:
         ros:
-            frame_id: 'float_rise/pressure'
+            frame_id: 'race_float/pressure'
 
         sensor:
             # brief: MODEL_02BA = 0, MODEL_30BA = 1
@@ -13,9 +13,9 @@
             # brief: Fluid Density (kg/m^3); fresh: 997.0474; seawater: 1023.6
             fluid_density: 1022.0
 
-            child_frame: 'float_rise/pressure'
+            child_frame: 'race_float/pressure'
 
-            parent_frame: 'float_rise/world'
+            parent_frame: 'race_float/world'
 
             z_covariance: 0.0
 

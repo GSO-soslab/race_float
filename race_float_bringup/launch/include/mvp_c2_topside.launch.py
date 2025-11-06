@@ -14,21 +14,6 @@ def generate_launch_description():
     topside_setting_file = os.path.join(get_package_share_directory(robot_bringup), 'config', 'mvp_c2.yaml') 
 
     return LaunchDescription([
-        
-        # Node(
-        #     package = 'mvp_c2',
-        #     namespace = 'commander',
-        #     executable='mvp_c2_serial_comm',
-        #     name = 'commander_c2_serial_comm',
-        #     output='screen',
-        #     prefix=['stdbuf -o L'],
-        #     parameters=[topside_setting_file],
-        #     remappings=[
-        #         ('dccl_msg_tx', 'mvp_c2/dccl_msg_tx'),
-        #         ('dccl_msg_rx', 'mvp_c2/dccl_msg_rx'),
-        #     ]
-        # ),
-
         Node(
             package = 'mvp_c2',
             namespace = robot_name,
@@ -52,19 +37,4 @@ def generate_launch_description():
             prefix=['stdbuf -o L'],
             parameters=[topside_setting_file],
         ),
-
-        # Node(
-        #     package="joy",
-        #     executable="joy_node",
-        #     name="joy_node",
-        #     namespace=robot_name,
-        #     output="screen",
-        #     parameters=[
-        #         {'coalesce_interval': 10},
-        #         {'autorepeat_rate': 0.0}
-        #     ],
-        #     remappings=[
-        #         ('joy', 'remote/id_2/joy'),
-        #     ]   
-        # ),
     ])
