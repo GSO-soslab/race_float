@@ -1,4 +1,4 @@
-/alpha_rise/world_odom_transform_node:
+/race_float/world_odom_transform_node:
   ros__parameters:
     m_gps_wait_time: 30.0
     ## Bay Campus
@@ -13,9 +13,14 @@
     ## Beach Pond
     datum_latitude: 41.573822
     datum_longitude: -71.787280
-    position_accuracy: 10.0
+    
+    # STATIONARY OPTIMIZATION: 
+    # Set to 2.0m to match the observed 1-2m GPS walking radius. 
+    # This helps the EKF classify the drift as noise.
+    position_accuracy: 2.0
+    
     acceptable_var: 10.0
     mag_declination_auto: false
     mag_declination: 0.0
     manual_position_covariance: -1.0
-    datum_manual_start: false
+    datum_manual_start: true

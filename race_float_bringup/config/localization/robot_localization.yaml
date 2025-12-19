@@ -21,32 +21,32 @@
     #imu data input
     imu0: vectornav/imu_raw
     imu0_config: [false, false, false,
+                  true,  true,  true,
                   false, false, false,
-                  false, false, false,
-                  false, false, false,
+                  true,  true,  true,
                   true,  true,  true]
+    imu0_nodelay: true
     imu0_differential: false
     imu0_relative: false
-    imu0_queue_size: 10
+    imu0_queue_size: 100
     imu0_remove_gravitational_acceleration: true
     # gravitational_acceleration: -9.81
     # imu0_pose_rejection_threshold: 0.8                 # Note the difference in parameter names
     # imu0_twist_rejection_threshold: 0.8                #
-    # imu0_linear_acceleration_rejection_threshold: 1.0  #
+    imu0_linear_acceleration_rejection_threshold: 1.0  #
 
     # [ADVANCED] Some IMUs automatically remove acceleration due to gravity, and others don't. If yours doesn't, please set
     # this to true, and *make sure* your data conforms to REP-103, specifically, that the data is in ENU frame.
-    
 
-    #gps velocity data
-    twist0: vectornav/vel_body
-    twist0_config: [false, false, false,
-                    false, false, false,
-                    true,  true,  false,
-                    false, false, false,
-                    false, false, false]
-    twist0_queue_size: 3
-    twist0_rejection_threshold: 2.0
+    # #gps velocity data
+    # twist0: vectornav/vel_body
+    # twist0_config: [false, false, false,
+    #                 false, false, false,
+    #                 true,  true,  false,
+    #                 false, false, false,
+    #                 false, false, false]
+    # twist0_queue_size: 3
+    # twist0_rejection_threshold: 2.0
 
     #pressure sensor
     odom0: depth/odometry
@@ -55,7 +55,8 @@
                     false, false, false,
                     false, false, false,
                     false, false, false]
-    odom0_queue_size: 2
+    odom0_queue_size: 10
+    odom0_nodelay: true
     odom0_differential: false
     odom0_relative: false
     odom0_pose_use_child_frame: true
@@ -63,32 +64,34 @@
     odom0_twist_rejection_threshold: 1.0
 
     #GPS
-    odom1: vn300/gps_odometry
+    odom1: vectornav/gps_odometry
     odom1_config: [true,  true,  false,
                    false, false, false,
                    false, false, false,
                    false, false, false,
                    false, false, false]
-    odom1_queue_size: 2
+    odom1_queue_size: 10
+    odom1_nodelay: true
     odom1_differential: false
     odom1_relative: false
     odom1_pose_use_child_frame: true
     odom1_pose_rejection_threshold: 10.0
     odom1_twist_rejection_threshold: 1.0
 
-    #Vectornav orientation (fused rtk heading)
-    odom2: vectornav/orientation_odometry
-    odom2_config: [false, false, false,
-                   true,  true,  true,
-                   false, false, false,
-                   false, false, false,
-                   false, false, false]
-    odom2_queue_size: 2
-    odom2_differential: false
-    odom2_relative: false
-    odom2_pose_use_child_frame: true
-    odom2_pose_rejection_threshold: 10.0
-    odom2_twist_rejection_threshold: 1.0
+    # #Vectornav orientation (fused rtk heading)
+    # odom2: vectornav/orientation_odometry
+    # odom2_config: [false, false, false,
+    #                false,  false,  true,
+    #                false, false, false,
+    #                false, false, false,
+    #                false, false, false]
+    # odom2_queue_size: 10
+    # odom2_nodelay: true
+    # odom2_differential: false
+    # odom2_relative: false
+    # odom2_pose_use_child_frame: true
+    # odom2_pose_rejection_threshold: 5.0
+    # odom2_twist_rejection_threshold: 1.0
 
     # [ADVANCED]  The EKF and UKF models follow a standard predict/correct cycle. During prediction, if there is no
     # acceleration reference, the velocity at time t+1 is simply predicted to be the same as the velocity at time t. During
@@ -138,26 +141,48 @@
     # unspecified.
     # Note: the specification of covariance matrices can be cumbersome, so all matrix parameters in this package support
     # both full specification or specification of only the diagonal values.
-   # ### set larger value for trusted sensor measurements
-    process_noise_covariance: [1.0, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  1.0, 0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  1.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  1.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  1.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  1.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  1.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   1.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  1.0,  0.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  1.0,  0.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  1.0,  0.0,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.1,  0.0,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.1,  0.0,
-                              0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.1]
+    
+    # ### set larger value for trusted sensor measurements
+    # process_noise_covariance: [ 0.1,   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.1,   0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.1,   0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    1e-1,   0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    1e-1,   0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    1e-1,   0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    1e-1,    0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     1e-1,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     1e-1,   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    1e-2,   0.0,    0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    1e-2,   0.0,    0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    1e-2,   0.0,    0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    1e-1,   0.0,    0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    1e-1,   0.0,
+    #                             0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    1e-1]
+
+    # STATIONARY OPTIMIZATION: 
+    # Diagonal values for Vx, Vy, Vz are set to 1e-9.
+    # This enforces that the robot physics model expects minimal movement.
+    # It will resist the GPS "walking" and average the position heavily.
+    process_noise_covariance: [ 1e-5,   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    1e-5,   0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    1e-5,   0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    1e-5,   0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    1e-5,   0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    1e-5,   0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    1e-9,    0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     1e-9,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     1e-9,   0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    1e-5,   0.0,    0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    1e-5,   0.0,    0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    1e-5,   0.0,    0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    1e-5,   0.0,    0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    1e-5,   0.0,
+                                0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    1e-5]
 
     # [ADVANCED] This represents the initial value for the state estimate error covariance matrix. Setting a diagonal
     # value (variance) to a large value will result in rapid convergence for initial measurements of the variable in
     # question. Users should take care not to use large values for variables that will not be measured directly. The values
     # are ordered as x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az. Defaults to the diagonal values below
     # if unspecified. In this example, we specify only the diagonal of the matrix.
-    # initial_estimate_covariance: [1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9]
+    # STATIONARY OPTIMIZATION: High initial position covariance to allow jump to GPS, low initial velocity covariance as we are stationary
+    # initial_estimate_covariance: [100.0, 100.0, 100.0, 1.0, 1.0, 1.0, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9]

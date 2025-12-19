@@ -14,6 +14,7 @@ def generate_launch_description():
     # Node argument
     robot_name = LaunchConfiguration('robot_name')
     localization_delay = LaunchConfiguration('localization_delay')
+    use_sim_time = LaunchConfiguration('use_sim_time')
 
     # Node param
     localization_param_file = Path(
@@ -32,17 +33,22 @@ def generate_launch_description():
     )    
 
     # Robot_Localization node
+    # Publishes: /race_float/odometry/filtered
+    # Subscribes: /vectornav/gps_odometry (from transform node)
     localization = Node(
             package='robot_localization',
             executable='ekf_node',
             name='ekf_filter_node',
             namespace=robot_name,
             # output='screen',
-            parameters=[localization_param_file],
+            parameters=[localization_param_file,
+                        {'use_sim_time': use_sim_time}],
             emulate_tty=True        
     )
 
-    # Initialization node
+    # Initialization node (World Odom Transform)
+    # 1. Takes /vectornav/gps/fix -> Publishes /vectornav/gps_odometry
+    # 2. Takes /race_float/odometry/filtered -> Publishes /race_float/odometry/navsatfix
     initialization = Node(
             package='mvp_localization_utilities',
             executable='world_odom_transform_node',
@@ -53,13 +59,22 @@ def generate_launch_description():
             parameters=[
                 {'tf_prefix': robot_name},
                 {'mag_model_path': mag_model_path},
+                {'use_sim_time': use_sim_time},
                  init_file
             ],
             remappings=[
-                        ('gps/fix', 'vn300/fix'),
-                        ('gps/odometry', 'vn300/gps_odometry'),
+                        # Input from Bag (Raw GPS)
+                        ('gps/fix', 'vectornav/gps/fix'),
+                        
+                        # Output to EKF (Metric GPS)
+                        ('gps/odometry', 'vectornav/gps_odometry'),
+                        
+                        # Input from EKF (Fused Odometry)
                         ('odometry', 'odometry/filtered'),
-                        ('depth', 'nortek_dvl/depth_odometry') ],
+                        
+                        # Input from Bag (Depth)
+                        ('depth', 'depth/odometry'),
+                        ],
             emulate_tty=True        
     )
 
@@ -72,6 +87,11 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             'localization_delay', default_value = '0.0'            
+        ),
+
+        DeclareLaunchArgument(
+            'use_sim_time', default_value = 'false',
+            description='Use simulation clock if true'
         ),
 
         # Delay the node if needed
