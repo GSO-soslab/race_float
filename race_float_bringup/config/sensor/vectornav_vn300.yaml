@@ -2,7 +2,7 @@
   ros__parameters:
     # --- Sensor Connection ---
     port: "/dev/ttyUSB0"
-    baudrate: 115200
+    baudrate: 128000
     # --- Data Configuration ---
     # Desired data output rate (Hz). This is used to calculate the 'rate_divisor'.
     # The actual rate is (IMU Rate / rate_divisor). Assuming IMU rate of 400Hz.

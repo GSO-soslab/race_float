@@ -1,5 +1,12 @@
-/race_float/gpio_manager_node:
+# /race_float/gpio_manager_node:
+# /**:
+#   ros__parameters:
+#     gpio_devices: [x, y, z]
+#     #Wring PI GPIO number
+#     wiringpi_gpio: [13, 12, 11]
+
+/**:
   ros__parameters:
-    gpio_devices: [x, y, z]
+    gpio_devices: [underwater_payload, jetson_board, norbit]
     #Wring PI GPIO number
-    wiringpi_gpio: [13, 12, 11]
+    wiringpi_gpio: [12, 13, 11]

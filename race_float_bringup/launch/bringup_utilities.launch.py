@@ -14,7 +14,7 @@ def generate_launch_description():
         XMLLaunchDescriptionSource(
             os.path.join(
                 get_package_share_directory('race_float_bringup'),
-                'launch/include/foxglove_bridge.launch.xml')),
+                'launch/include/foxglove_bridge_launch.xml')),
         launch_arguments={
             'namespace': robot_name
         }.items()
@@ -46,10 +46,21 @@ def generate_launch_description():
     computer = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             os.path.join(get_package_share_directory('race_float_bringup'), 
-            'launch/include/computer_monitoring.launch.py')]),
+            'launch/include/computer_monitor.launch.py')]),
         launch_arguments={
             'robot_name': robot_name,
             'computer_delay': '9.0'
+        }.items()  
+    ) 
+
+    # PWM manager
+    pwm = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            os.path.join(get_package_share_directory('race_float_bringup'), 
+            'launch/include/pwm_driver.launch.py')]),
+        launch_arguments={
+            'robot_name': robot_name,
+            'pwm_delay': '12.0'
         }.items()  
     ) 
 
@@ -59,4 +70,5 @@ def generate_launch_description():
         gpio,
         power,
         computer,
+        pwm
     ])    

@@ -12,19 +12,19 @@ def generate_launch_description():
 
     # Node argument
     robot_name = LaunchConfiguration('robot_name')
-    power_delay = LaunchConfiguration('power_delay')
+    pwm_delay = LaunchConfiguration('pwm_delay')
 
     # Node param
     parameters_file = Path(
         get_package_share_directory('race_float_bringup'), 
-        'config/sensor/power_monitor.yaml'
+        'config/sensor/pwm_driver.yaml'
     )
-
-    # Power Monitor node
+    
+    # PWM driver node
     node = Node(
-        package='power_monitor',
-        executable='power_monitor_node',
-        name='power_monitor_node',
+        package='pwm_driver',
+        executable='pwm_driver_node',
+        name='pwm_driver_node',
         namespace=robot_name,
         output='screen',
         parameters=[parameters_file],      
@@ -39,12 +39,12 @@ def generate_launch_description():
         ),
 
         DeclareLaunchArgument(
-            'power_delay', default_value = '0.0'            
+            'pwm_delay', default_value = '0.0'            
         ),
 
         # Delay the node if needed
         TimerAction(
-            period=PythonExpression([power_delay]),
+            period=PythonExpression([pwm_delay]),
             actions=[node]
         ),
     ])
