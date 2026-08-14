@@ -5,7 +5,7 @@
     pwm_ms_bias: 0.1
     no_pwm_timeout: 10.0
 
-    led_ch_list: [5]
+    led_ch_list: [12]
     led_topic_list: [led_1]
     led_min_us: [1100]
     led_max_us: [1900]

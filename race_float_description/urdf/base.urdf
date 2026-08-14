@@ -1,15 +1,36 @@
 <?xml version="1.0"?>
 
-<robot name="race_float">
-
-    <link name="base_link">
+<robot name="race_station">
+   <link name="nose_tip_link">
+   <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <!-- <visual>
+            <origin xyz="00.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://race_station_description/mesh/RACE_body.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual> -->
     </link>
+
+    
+    <link name="base_link"/>
+    <joint name="base_link" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="nose_tip_link"/>
+    </joint>
 
     <link name="cg_link"/>
     <joint name="cg_joint" type="fixed">
-        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <origin xyz="0.0 0.0 0.0" rpy="3.1415926 0.0 0.0"/>
         <parent link="base_link"/>
         <child link="cg_link"/>
+    </joint>
+
+    <link name="dock_point"/>
+    <joint name="dock_point_joint" type="fixed">
+        <origin xyz="-0.415 0.33 -0.05" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="dock_point"/>
     </joint>
 
     <link name="imu"/>
@@ -17,6 +38,13 @@
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="base_link"/>
         <child link="imu"/>
+    </joint>
+
+    <link name="imu_sf"/>
+    <joint name="imu__sf_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="imu_sf"/>
     </joint>
 
     <link name="gps"/>
@@ -28,30 +56,139 @@
 
     <link name="pressure"/>
     <joint name="pressure_joint" type="fixed">
-        <origin xyz="0.00 0.0 -0.02" rpy="0.0 0.0 0.0"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="base_link"/>
         <child link="pressure"/>
     </joint>
 
-    <link name="light"/>
-    <joint name="light_joint" type="fixed">
-        <origin xyz="-0.02 0.03 1.57" rpy="-90.0 0.0 180.0"/>
+    <!-- <link name="cam1"/>
+    <joint name="cam1_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="base_link"/>
-        <child link="light"/>
+        <child link="cam1"/>
     </joint>
 
-    <link name="tag25"/>
-    <joint name="tag1_joint" type="fixed">
-        <origin xyz="0.0 0.0 1.22" rpy="0.0 -90.0 -90.0"/>
+    <link name="cam2"/>
+    <joint name="cam2_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="base_link"/>
-        <child link="tag25"/>
+        <child link="cam2"/>
+    </joint> -->
+
+    <!--
+        AprilTag links.
+        Convention: <prefix><family>_<id>, where <family> is the pupil_apriltags
+        family name without the "tag" prefix (e.g. "25h9", "36h11"). The numeric
+        id is per-family: two tags in different families may share the same id.
+
+        All origins are temporarily zeroed out; real physical layout TBD.
+    -->
+
+    <!-- 4 x tag25h9 (21 cm) -->
+    <link name="apriltag25h9_17"/>
+    <joint name="apriltag25h9_17_joint" type="fixed">
+        <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> -->
+        <origin xyz="-1.22 0.33 0.17" rpy="0.0 1.5707963 3.1415926"/>
+        <parent link="base_link"/>
+        <child link="apriltag25h9_17"/>
     </joint>
 
-    <link name="tag17"/>
-    <joint name="tag2_joint" type="fixed">
-        <origin xyz="0.0 0.0 2.0" rpy="-90.0 90.0 0.0"/>
+    <link name="apriltag25h9_13"/>
+    <joint name="apriltag25h9_13_joint" type="fixed">
+        <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> -->
+        <origin xyz="-0.65 0.68 0.17" rpy="1.5707963 1.5707963 3.1415926"/>
         <parent link="base_link"/>
-        <child link="tag17"/>
+        <child link="apriltag25h9_13"/>
     </joint>
+
+    <link name="apriltag25h9_02"/>
+    <joint name="apriltag25h9_02_joint" type="fixed">
+        <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> -->
+        <origin xyz="0.0 0.33 0.17" rpy="0.0 1.5707963 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag25h9_02"/>
+    </joint>
+
+    <link name="apriltag25h9_25"/>
+    <joint name="apriltag25h9_25_joint" type="fixed">
+        <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> -->
+        <origin xyz="-0.65 -0.03 0.17" rpy="1.5707963 1.5707963 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag25h9_25"/>
+    </joint>
+
+    <!-- 2 x tag36h11 (12.5 cm) -->
+    <link name="apriltag36h11_009"/>
+    <joint name="apriltag36h11_009_joint" type="fixed">
+        <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> -->
+        <origin xyz="-0.42 0.12 0.0" rpy="0.0 3.1415926 3.1415926"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_009"/>
+    </joint>
+
+    <link name="apriltag36h11_022"/>
+    <joint name="apriltag36h11_022_joint" type="fixed">
+        <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/> -->
+        <origin xyz="-0.42 0.52 0.0" rpy="0.0 3.1415926 3.1415926"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_022"/>
+    </joint>
+
+    <!-- 8 x tag36h11 (4 cm) -->
+    <!-- <link name="apriltag36h11_2"/>
+    <joint name="apriltag36h11_2_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_2"/>
+    </joint>
+
+    <link name="apriltag36h11_3"/>
+    <joint name="apriltag36h11_3_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_3"/>
+    </joint>
+
+    <link name="apriltag36h11_4"/>
+    <joint name="apriltag36h11_4_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_4"/>
+    </joint>
+
+    <link name="apriltag36h11_5"/>
+    <joint name="apriltag36h11_5_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_5"/>
+    </joint>
+
+    <link name="apriltag36h11_6"/>
+    <joint name="apriltag36h11_6_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_6"/>
+    </joint>
+
+    <link name="apriltag36h11_7"/>
+    <joint name="apriltag36h11_7_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_7"/>
+    </joint>
+
+    <link name="apriltag36h11_8"/>
+    <joint name="apriltag36h11_8_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_8"/>
+    </joint>
+
+    <link name="apriltag36h11_9"/>
+    <joint name="apriltag36h11_9_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="apriltag36h11_9"/>
+    </joint> -->
 
 </robot>
