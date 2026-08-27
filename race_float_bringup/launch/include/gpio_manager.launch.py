@@ -1,35 +1,51 @@
-
 from launch import LaunchDescription
-from ament_index_python.packages import get_package_share_directory
-from launch_ros.actions import Node
-import os
-import yaml
-from launch.substitutions import EnvironmentVariable
-import pathlib
-import launch.actions
 from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch.substitutions import PythonExpression
+from launch.actions import SetEnvironmentVariable
+from launch.actions import TimerAction
+from launch_ros.actions import Node
+from ament_index_python.packages import get_package_share_directory
+from pathlib import Path
 
 def generate_launch_description():
-    robot_name = 'race_float'
-    robot_bringup = robot_name + '_bringup'
 
-    gpio_param_file = os.path.join(
-        get_package_share_directory(robot_bringup),
-        'config',
-        'sensors',
-        'gpio_manager.yaml',
-        )
+    # Node argument
+    robot_name = LaunchConfiguration('robot_name')
+    gpio_delay = LaunchConfiguration('gpio_delay')
 
+    # Node param
+    parameters_file = Path(
+        get_package_share_directory('race_float_bringup'), 
+        'config/sensor/gpio_manager.yaml'
+    )
+
+    # GPIO Manager node
+    node = Node(
+        package='mvp_gpio_manager',
+        executable='gpio_manager_node',
+        name='gpio_manager',
+        namespace=robot_name,
+        output='screen',
+        # prefix=['stdbuf -o L'],
+        parameters=[parameters_file],
+        emulate_tty=True        
+    )    
+    
     return LaunchDescription([
-        Node(
-            package='mvp_gpio_manager',
-            executable='gpio_manager_node',
-            name='gpio_manager_node',
-            namespace=robot_name,
-            output='screen',
-            prefix=['stdbuf -o L'],
-            parameters=[
-                gpio_param_file
-                ],
-           )
-])
+
+        # Decalre arguments
+        DeclareLaunchArgument(
+            'robot_name', default_value = 'my_robot'            
+        ),
+
+        DeclareLaunchArgument(
+            'gpio_delay', default_value = '0.0'            
+        ),
+
+        # Delay the node if needed
+        TimerAction(
+            period=PythonExpression([gpio_delay]),
+            actions=[node]
+        ),
+    ])

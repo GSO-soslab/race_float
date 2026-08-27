@@ -1,4 +1,5 @@
-/race_float/power_monitor_node:
+# /race_float/power_monitor_node:
+/**:
     ros__parameters:
         voltage:
             # brief: device address

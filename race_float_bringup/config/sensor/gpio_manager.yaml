@@ -1,5 +1,7 @@
-/race_float/gpio_manager_node:
+# /race_float/gpio_manager_node:
+/**:
   ros__parameters:
-    gpio_devices: [em_1, em_2]
+    gpio_devices: [em_1, usbl]
+    # GPIO 9, 10
     #Wring PI GPIO number
-    wiringpi_gpio: [8, 9]
+    wiringpi_gpio: [13, 12]
